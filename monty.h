@@ -1,77 +1,75 @@
 #ifndef MONTY_H
 #define MONTY_H
-
-#define _GNU_SOURCE
 #include <stdio.h>
-#include <unistd.h>
-#include <string.h>
 #include <stdlib.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <string.h>
 #include <ctype.h>
-#include <stdarg.h>
 
 /**
- * struct stack_s - doubly linked list representation of a stack (or queue)
- * @n: integer
- * @prev: points to the previous element of the stack (or queue)
- * @next: points to the next element of the stack (or queue)
- *
- * Description: doubly linked list node structure
- * for stack, queues, LIFO, FIFO
+ * struct stack_s - struct stack
+ * @n: n
+ * @prev: prev
+ * @next: next
  */
 typedef struct stack_s
 {
-        int n;
-        struct stack_s *prev;
-        struct stack_s *next;
+	int n;
+	struct stack_s *prev;
+	struct stack_s *next;
 } stack_t;
+
+/**
+ * struct bus_s - struct bus
+ * @arg: arg
+ * @file: file
+ * @ln: line ln
+ * @lifi: lifi
+ */
+typedef struct bus_s
+{
+	char *arg;
+	FILE *file;
+	char *ln;
+	int lifi;
+}  bus_t;
+extern bus_t bus;
 
 /**
  * struct instruction_s - struct instruction
  * @opcode: opcode
  * @f: function
  */
-
 typedef struct instruction_s
 {
-        char *opcode;
-        void (*f)(stack_t **stack, unsigned int line_number);
+	char *opcode;
+	void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
-
-extern stack_t *head;
-typedef void (*op_func)(stack_t **, unsigned int);
-
-void filePath(char *file_name);
-int parse_line(char *buffer, int line_number, int format);
-void read_file(FILE *);
-int len_chars(FILE *);
-void find_func(char *, char *, int, int);
-
-stack_t *create_node(int n);
-void free_nodes(void);
-void print_stack_items(stack_t **, unsigned int);
-void add_item_to_stack(stack_t **, unsigned int);
-void add_to_queue(stack_t **, unsigned int);
-
-void call_fun(op_func, char *, char *, int, int);
-
-void print_top_item(stack_t **, unsigned int);
-void pop_top_item(stack_t **, unsigned int);
-void nop(stack_t **, unsigned int);
-void swap_items(stack_t **, unsigned int);
-
-void add_items(stack_t **, unsigned int);
-void sub_items(stack_t **, unsigned int);
-void div_items(stack_t **, unsigned int);
-void multiply_items(stack_t **, unsigned int);
-void mode_items(stack_t **, unsigned int);
-
-void print_char(stack_t **, unsigned int);
-void print_str(stack_t **, unsigned int);
-void rotl(stack_t **, unsigned int);
-
-void error(int code_error, ...);
-void expand_errors(int code_error, ...);
-void errors_name(int code_error, ...);
-void rotr(stack_t **, unsigned int);
+char *_realloc(char *ptr, unsigned int old_size, unsigned int new_size);
+ssize_t getstdin(char **lineptr, int file);
+char  *clean_line(char *ln);
+void push_item(stack_t **head, unsigned int number);
+void print_all(stack_t **head, unsigned int number);
+void print_int(stack_t **head, unsigned int number);
+int execute(char *ln, stack_t **head, unsigned int counter, FILE *file);
+void free_stack(stack_t *head);
+void pop_item(stack_t **head, unsigned int counter);
+void swap_item(stack_t **head, unsigned int counter);
+void func_add_item(stack_t **head, unsigned int counter);
+void func_no_op(stack_t **head, unsigned int counter);
+void sub_item(stack_t **head, unsigned int counter);
+void div_item(stack_t **head, unsigned int counter);
+void multiply_item(stack_t **head, unsigned int counter);
+void mode_item(stack_t **head, unsigned int counter);
+void print_char(stack_t **head, unsigned int counter);
+void print_str(stack_t **head, unsigned int counter);
+void rotates_func_top(stack_t **head, unsigned int counter);
+void rotates_func_bottom(stack_t **head, __attribute__((unused)) unsigned int counter);
+void add_item(stack_t **head, int n);
+void add_item_to_queue(stack_t **head, int n);
+void print_queue(stack_t **head, unsigned int counter);
+void print_top_stack(stack_t **head, unsigned int counter);
 
 #endif
